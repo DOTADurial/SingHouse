@@ -21,7 +21,12 @@
 python3 -m http.server 8000   # 然后访问 http://localhost:8000
 ```
 
-也可以直接部署到 GitHub Pages（Settings → Pages → Deploy from branch）。
+### 部署到 GitHub Pages
+
+仓库带有 `.github/workflows/pages.yml`，每次推送到 `main` 都会自动发布（也可以在 Actions 页手动运行）。
+
+首次使用前需要开启一次：仓库 **Settings → Pages → Build and deployment → Source** 选 **GitHub Actions**。
+发布后的地址是 `https://<用户名>.github.io/<仓库名>/`。
 
 ## 数据
 
