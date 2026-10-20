@@ -202,3 +202,4 @@ th { color: var(--ink-2); font-weight: 600; }
 @media (prefers-reduced-motion: reduce) {
   .tile, .rank-row, .rank-row .band, .rank-row .dot { transition: none; }
 }
+.seg.market button[aria-checked="true"] { background: var(--accent); color: #fff; }
