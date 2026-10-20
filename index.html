@@ -4,29 +4,33 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>新加坡房价分布</title>
-  <meta name="description" content="新加坡 HDB 组屋转售价格按市镇的动态分布：地图、排名与历年走势。">
+  <meta name="description" content="新加坡 HDB 组屋与私宅价格按区域的动态分布：地图、排名与历年走势。">
   <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body>
   <header class="site-header">
     <div>
       <h1>新加坡房价分布</h1>
-      <p class="subtitle">HDB 组屋转售价 · 按市镇 · <span id="year-span"></span></p>
+      <p class="subtitle" id="subtitle"></p>
     </div>
     <button id="theme-toggle" class="ghost" type="button" aria-label="切换深浅色"><svg width="18" height="18" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="2"/><path d="M12 3a9 9 0 0 1 0 18z" fill="currentColor"/></svg></button>
   </header>
 
   <div id="sample-note" class="note" hidden>
-    当前为<strong>估算示例数据</strong>，按 HDB 转售价格指数走势生成，仅用于演示。
-    运行 <code>python3 scripts/build_data.py --csv resale.csv</code> 即可换成 data.gov.sg 官方成交数据。
+    当前为<strong>估算示例数据</strong>，按官方价格指数走势生成，仅用于演示。
+    运行 <code id="sample-cmd"></code> 即可换成<span id="sample-source"></span>。
   </div>
 
   <section class="filters" aria-label="筛选">
-    <label>户型
+    <div class="seg market" role="radiogroup" aria-label="市场">
+      <button type="button" role="radio" data-market="hdb" aria-checked="true">HDB 组屋</button>
+      <button type="button" role="radio" data-market="private" aria-checked="false">私宅</button>
+    </div>
+    <label><span id="type-label">户型</span>
       <select id="type-select"></select>
     </label>
     <div class="seg" role="radiogroup" aria-label="指标">
-      <button type="button" role="radio" data-metric="price" aria-checked="true">中位价</button>
+      <button type="button" role="radio" data-metric="price" aria-checked="true">价格</button>
       <button type="button" role="radio" data-metric="yoy" aria-checked="false">同比涨幅</button>
     </div>
     <div class="timeline">
@@ -41,26 +45,27 @@
   <main class="grid">
     <article class="card map-card">
       <header class="card-head">
-        <h2 id="map-title">各市镇中位价</h2>
-        <p class="hint">点击市镇加入下方走势对比（最多 3 个）</p>
+        <h2 id="map-title"></h2>
+        <p class="hint" id="map-hint"></p>
+        <p class="hint" id="unit-note" hidden>呎价 = 成交价 ÷ 面积（平方英尺），不含有地住宅</p>
       </header>
       <div id="tilemap" class="tilemap" role="list"></div>
       <div id="legend" class="legend"></div>
-      <h3 class="sub-head">五大区域</h3>
+      <h3 class="sub-head" id="region-heading"></h3>
       <div id="regions" class="regions"></div>
     </article>
 
     <article class="card rank-card">
       <header class="card-head">
         <h2>价格排名与分布</h2>
-        <p class="hint">条带 = 25%–75% 分位，圆点 = 中位数</p>
+        <p class="hint" id="rank-hint"></p>
       </header>
       <div id="rank" class="rank"></div>
     </article>
 
     <article class="card trend-card">
       <header class="card-head">
-        <h2>历年走势</h2>
+        <h2 id="trend-title">历年走势</h2>
         <div id="trend-legend" class="series-legend"></div>
       </header>
       <div id="trend" class="trend"></div>
@@ -81,6 +86,7 @@
   <div id="tooltip" class="tooltip" role="tooltip" hidden></div>
 
   <script src="data/hdb-data.js"></script>
+  <script src="data/private-data.js"></script>
   <script src="assets/app.js"></script>
 </body>
 </html>
